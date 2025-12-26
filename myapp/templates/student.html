@@ -1,0 +1,310 @@
+{% extends 'header.html' %}
+{%load static%}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Bus Pass Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url(https://www.opindia.com/wp-content/uploads/2025/01/GSRTC-2025-01-23-16-25-25.jpg);
+      background-size: cover;
+      background-position: inherit;
+      background-repeat: no-repeat;
+      margin: auto;
+      padding: auto;
+    }
+
+    .form-container {
+      background: #fff;
+      max-width: 1300px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .form-container img.banner {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: black;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <!-- <img class="banner" src="C:\Users\PATEL TRUSHANG\Downloads\Screenshot 2025-05-03 193934(1)(1)(2).png" alt="Bus Pass Banner"> -->
+
+    <h2>Student Bus Pass Form</h2><hr>
+    <form id="passForm" onsubmit="return validateForm()">
+
+      <div class="row">
+        <div class="col">
+            <label>I-Card Number(School Unique Id Card Number)</label>
+            <input type="text" required  oninput="validateInput(this)" >
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+          <label>First Name</label>
+          <input type="text" required >
+      </div>
+      <div class="col">
+        <label>Middle Name</label>
+        <input type="text" required >
+    </div>
+      <div class="col">
+          <label>Last Name</label>
+          <input type="text" required >
+      </div>
+  </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email"  placeholder="Enter Valid Email-Id">
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+        <input type="text" id="mobile" maxlength="10" oninput="validateInput(this)" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address"  placeholder="Enter Address Same as Aadhaar-card" required>
+      </div>
+
+      <div class="row">
+        <div class="col">
+            <label>Date Of Birth</label>
+            <input type="date" required >
+        </div>
+        <div class="col">
+          <label>Gender</label>
+          <select id="gender" required >
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label for="clgName">School Name</label>
+        <input type="text" id="clgName" required >
+      </div>
+
+      <div class="form-group">
+        <label for="clgAddress">School Address</label>
+        <input type="text" id="clgAddress" required >
+      </div>
+
+      <div class="row">
+        <div class="col">
+            <label>From Location</label>
+            <input type="text" id="fromArea" required >
+        </div>
+        <div class="col">
+          <label>To Location</label>
+          <input type="text" id="toArea" required >
+      </div>
+    </div>
+
+      <div class="row">
+        <div class="col">
+            <label>Academic Year</label>
+            <input type="text" id="academicYear"  maxlength="4" oninput="validateInput1(this)" required>
+        </div>
+        <div class="col">
+          <label>Route</label>
+          <select id="gender" required >
+            <option value="">Select</option>
+            <option value="Male">Single</option>
+            <option value="Female">Multiple</option>
+          </select>
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label for="distance">Distance (in KM)</label>
+        <input type="number" id="distance"  min="1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="passType">Pass Type</label>
+        <select id="passType" onchange="calculateAmount()" required >
+          <option value="">Select</option>
+          <option value="Local">Local</option>
+          <option value="Express">Express</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="duration">Pass Duration</label>
+        <select id="duration" onchange="calculateAmount()" required >
+          <option value="">Select</option>
+          <option value="1">1 Month</option>
+          <option value="3">3 Months</option>
+          <option value="6">6 Months</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="fromDate">Pass From Date</label>
+        <input type="date" id="fromDate"  readonly required>
+      </div>
+
+      <div class="form-group">
+        <label for="toDate">Pass Start Date</label>
+        <input type="date" id="toDate" required>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Pass Amount (Auto Calculated)</label>
+        <input type="text" id="amount" readonly required>
+      </div>
+
+      <br>
+      <div class="form-group">
+          <label for="aadhaar">Upload Passport Size Photo (Max:-1MB)</label>
+          <input type="file" class="form-control" name="pimage" style = "height:40px; width:450px" required>
+      </div>
+      <br>
+
+      <br>
+      <div class="form-group">
+          <label for="aadhaar">Upload Light Bill Image (Max:-1MB)</label>
+          <input type="file" class="form-control" name="pimage" style = "height:40px; width:450px" required>
+      </div>
+      <br>
+
+      <br>
+      <div class="form-group">
+          <label for="aadhaar">Upload school Bonafide certificate (Max:-1MB)</label>
+          <input type="file" class="form-control" name="pimage" style = "height:40px; width:450px" required>
+      </div>
+      <br>
+
+      <div class="form-group">
+        <label for="payment">Payment Mode</label>
+        <select id="payment" required>
+          <option value="">Select</option>
+          <option value="Cash">Cash</option>
+          <option value="Online">Online</option>
+        </select>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("fromDate").value = today;
+      document.getElementById("fromDate").setAttribute("min", today);
+    });
+
+    function calculateAmount() {
+      const duration = document.getElementById("duration").value;
+      const passType = document.getElementById("passType").value;
+      const distance = parseFloat(document.getElementById("distance").value);
+      let amount = 0;
+
+      const dayMap = { "1": 7, "3": 14, "6": 21 };
+
+      if (passType && duration && !isNaN(distance) && distance > 0) {
+        const days = dayMap[duration];
+        const roundTrip = distance * 2;
+
+        if (passType === "Local") {
+          amount = roundTrip * 0.50 * days;
+        } else if (passType === "Express") {
+          amount = roundTrip * 0.85 * days;
+        }
+      }
+
+      document.getElementById("amount").value = amount.toFixed(2);
+    }
+
+    function validateForm() {
+      const distance = document.getElementById("distance").value;
+      if (distance <= 0 || isNaN(distance)) {
+        alert("Please enter a valid distance.");
+        return false;
+      }
+      return true;
+    }
+
+    function validateInput(input) {
+      // Remove non-numeric characters
+      input.value = input.value.replace(/\D/g, '');
+      // Limit to 10 digits
+      if (input.value.length > 10) {
+        input.value = input.value.slice(0, 10);
+      }
+    }
+
+    function validateInput1(input) {
+      // Remove non-numeric characters
+      input.value = input.value.replace(/\D/g, '');
+      // Limit to 10 digits
+      if (input.value.length > 4) {
+        input.value = input.value.slice(0, 10);
+      }
+    }
+
+  </script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Pass Receipt</title>
+  <style>
+    .receipt-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-family: Arial, sans-serif;
+    }
+    .receipt-container h2 {
+      text-align: center;
+      color: green;
+      margin-bottom: 30px;
+    }
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .receipt-table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    .photo {
+      text-align: center;
+    }
+    .photo img {
+      width: 120px;
+      height: 150px;
+      object-fit: cover;
+      border: 1px solid #000;
+    }
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .actions a {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt-container">
+    <h2>✅ Bus Pass Form Submitted Successfully!</h2>
+    <table class="receipt-table">
+      <tr>
+        <td><strong>Enrollment Number:</strong></td>
+        <td>{{ student.ent_number }}</td>
+        <td rowspan="6" class="photo">
+          <img src="{{ student.photo.url }}" alt="Student Photo">
+        </td>
+      </tr>
+      <tr><td><strong>Full Name:</strong></td><td>{{ student.first_name }}</td></tr>
+      <tr><td><strong>Email:</strong></td><td>{{ student.email }}</td></tr>
+      <tr><td><strong>Mobile:</strong></td><td>{{ student.mobile }}</td></tr>
+      <tr><td><strong>Address:</strong></td><td>{{ student.address }}</td></tr>
+      <tr><td><strong>DOB:</strong></td><td>{{ student.dob }}</td></tr>
+      <tr><td><strong>College:</strong></td><td colspan="2">{{ student.clg_name }}</td></tr>
+      <tr><td><strong>College Address:</strong></td><td colspan="2">{{ student.clg_address }}</td></tr>
+      <tr><td><strong>Semester:</strong></td><td colspan="2">{{ student.sem }}</td></tr>
+      <tr><td><strong>Gender:</strong></td><td colspan="2">{{ student.gender }}</td></tr>
+      <tr><td><strong>Route:</strong></td><td colspan="2">{{ student.from_location }} → {{ student.to_location }}</td></tr>
+      <tr><td><strong>Distance:</strong></td><td colspan="2">{{ student.distance_km }} KM</td></tr>
+      <tr><td><strong>Pass Type:</strong></td><td colspan="2">{{ student.pass_type }}</td></tr>
+      <tr><td><strong>Duration:</strong></td><td colspan="2">{{ student.duration_months }} Month(s)</td></tr>
+      <tr><td><strong>From Date:</strong></td><td colspan="2">{{ student.from_date }}</td></tr>
+      <tr><td><strong>To Date:</strong></td><td colspan="2">{{ student.to_date }}</td></tr>
+      <tr><td><strong>Amount Paid:</strong></td><td colspan="2">₹ {{ student.amount }}</td></tr>
+      <tr><td><strong>Payment Mode:</strong></td><td colspan="2">{{ student.payment_mode }}</td></tr>
+    </table>
+
+    <div class="actions">
+      <a href="{% url 'clgstudentform1' %}">Submit Another</a>
+      <a href="{% url 'index' %}">Return to Home</a>
+    </div>
+  </div>
+</body>
+</html>
+{% endblock %}

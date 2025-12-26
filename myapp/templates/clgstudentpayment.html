@@ -1,0 +1,95 @@
+{% extends 'header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clg Student Bus Pass Payment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .btn {
+      width: 100%;
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Clg Student Online Payment</h2>
+    <form id="paymentForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" value="{{ name }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount (INR)</label>
+        <input type="text" id="amount" name="amount" value="{{ amount }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="method">Select Payment Method</label>
+        <select id="method" name="method" required>
+          <option value="">-- Select --</option>
+          <option value="upi">UPI</option>
+          <option value="card">Credit/Debit Card</option>
+          <option value="netbanking">Net Banking</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn">Pay Now</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const method = document.getElementById("method").value;
+      if (!method) {
+        alert("Please select a payment method.");
+        return;
+      }
+      window.location.href = "/clg/payment/success/?uid={{ uid }}";
+    });
+  </script>
+</body>
+</html>
+{% endblock %}

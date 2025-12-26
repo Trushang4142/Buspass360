@@ -1,0 +1,130 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pass Request</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #e0f0f8; /* Light blue background */
+    }
+
+    .main-container {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .section {
+      display: flex;
+      border: 1px solid #ccc;
+      background-color: white;
+      border-radius: 5px;
+      padding: 30px;
+      width: 100%;
+      max-width: 1200px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .box {
+      flex: 1;
+      margin: 0 5px;
+    }
+
+    .box h2 {
+      text-align: center;
+      color: blue;
+      margin-bottom: 20px;
+    }
+
+    .btn-new {
+      background-color: #318058;
+      color: white;
+      font-size: 20px;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 30px;
+      cursor: pointer;
+      display: block;
+      margin: 40px auto 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: bold;
+      color: #555;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .form-label span {
+      color: red;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .btn-group {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .btn-group button {
+      background-color: #1976d2;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      margin-left: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-group button:last-child {
+      background-color: #1565c0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="section">
+      
+      <!-- New Pass Request -->
+      <div class="box">
+        <h2>Student New Pass Request</h2>
+        <button class="btn-new"><a href="{% url 'studentform' %}">New</a></button>
+      </div>
+
+      <!-- Pass Renewal Request -->
+      <div class="box">
+        <h2>Pass Renewal Request</h2>
+        
+        <div class="form-group">
+          <label class="form-label">Roll-Number<span>*</span></label>
+          <input type="text" class="form-input">
+        </div>
+
+        <div class="btn-group">
+          <button>Search</button>
+          <button>Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends 'header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <title>GSRTC BillDesk Payment</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    h2 {
+      text-align: center;
+      color: #0656f6;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #333333;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .hidden {
+      display: none;
+    }
+    .pay-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .pay-btn:hover {
+      background-color: #0d7323;
+    }
+    .secure {
+      text-align: center;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      color: #6c757d;
+    }
+    .option-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .option-icon img {
+      height: 20px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <hr>
+  <div class="container">
+    <h2>GSRTC BillDesk Payment</h2><hr>
+    <form id="billdeskForm">
+      <div class="form-group">
+        <label for="name">Payee Name</label>
+        <input type="text" id="name" name="name" readonly>
+      </div>
+      <div>
+        <label for="amount">Amount (₹)</label>
+        <input type="text" id="amount" name="amount" readonly>
+      </div>
+      <div class="form-group">
+        <label for="paymentMethod">Select Payment Method</label>
+        <select id="paymentMethod" required>
+          <option value="">-- Choose --</option>
+          <option value="upi">💳 UPI</option>
+          <option value="card">💳 Credit/Debit Card</option>
+          <option value="netbanking">🏦 Net Banking</option>
+        </select>
+      </div>
+
+      <!-- UPI -->
+      <div class="form-group hidden" id="upiSection">
+        <label for="upiId">UPI ID</label>
+        <input type="text" id="upiId" placeholder="example@upi">
+      </div>
+
+      <!-- Card -->
+      <div class="form-group hidden" id="cardSection">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19">
+       
+        <label for="expiry">Expiry Date</label>
+        <input type="text" name="expiry" id="expiry" maxlength="5" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" inputmode="numeric">
+
+        <label for="cvv">CVV/CVC</label>
+        <input type="text" name="cvv" id="cvv" maxlength="4" placeholder="123" pattern="^\d{3,4}$" inputmode="numeric">
+
+        <label for="card_name">Name on Card</label>
+        <input type="text" name="card_name" id="card_name" placeholder="John Doe">
+
+        <div style="margin-top: 10px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style="height:24px; margin-right:10px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" style="height:24px; margin-right:10px;">
+          <img src="https://logos-world.net/wp-content/uploads/2021/03/RuPay-Logo-700x394.png" alt="RuPay" style="height:24px;">
+        </div>
+      </div>
+
+      <!-- Net Banking -->
+      <div class="form-group hidden" id="netbankingSection">
+        <label for="bank">Select Bank</label>
+        <select id="bank">
+          <option value="">-- Select Bank --</option>
+          <option value="sbi">State Bank of India</option>
+          <option value="hdfc">HDFC Bank</option>
+          <option value="icici">ICICI Bank</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        {% csrf_token %}
+        <button type="submit" class="pay-btn">Pay Now</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const nameFromForm = urlParams.get('name');
+    const amountFromForm = urlParams.get('amount');
+    const uid = urlParams.get('uid');
+
+    if (nameFromForm) document.getElementById("name").value = decodeURIComponent(nameFromForm);
+    if (amountFromForm) document.getElementById("amount").value = decodeURIComponent(amountFromForm);
+
+    const method = document.getElementById("paymentMethod");
+    method.addEventListener("change", () => {
+      ["upiSection", "cardSection", "netbankingSection"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+        document.querySelectorAll(`#${id} input, #${id} select`).forEach(input => {
+          input.removeAttribute("required");
+        });
+      });
+
+      if (method.value === "upi") {
+        document.getElementById("upiSection").classList.remove("hidden");
+        document.getElementById("upiId").setAttribute("required", "true");
+      }
+      if (method.value === "card") {
+        document.getElementById("cardSection").classList.remove("hidden");
+        ["cardNumber", "expiry", "cvv", "card_name"].forEach(id => {
+          document.getElementById(id).setAttribute("required", "true");
+        });
+      }
+      if (method.value === "netbanking") {
+        document.getElementById("netbankingSection").classList.remove("hidden");
+        document.getElementById("bank").setAttribute("required", "true");
+      }
+    });
+
+    document.getElementById("billdeskForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const method = document.getElementById("paymentMethod").value;
+      if (!method) {
+        alert("Please select a payment method.");
+        return;
+      }
+
+      // ✅ Simulate success redirect
+      window.location.href = `/payment_success/?uid=${uid}`;
+    });
+  </script>
+</body>
+</html>
+{% endblock %}

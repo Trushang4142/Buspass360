@@ -1,0 +1,10 @@
+{% extends 'header.html' %}
+{% block content %}
+<div style="text-align:center; padding: 100px;">
+  <h1 style="color:green;">✅ Bus Pass Form Submitted Successfully!</h1>
+  <p>Thank you. Your details have been saved.</p>
+  <a href="{% url 'student_pdf' student.id %}">📄 Download Receipt PDF</a><br><br>
+  <a href="{% url 'studentform1' %}">Submit Another</a> |
+  <a href="{% url 'index' %}">Return to Home</a>
+</div>
+{% endblock %}

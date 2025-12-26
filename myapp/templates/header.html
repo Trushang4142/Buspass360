@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Online — Buspass360</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,700,900|Playfair+Display:200,300,400,700">
+  <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+  <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+  <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
+  <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="site-wrap">
+
+  <!-- Mobile Menu -->
+  <div class="site-mobile-menu">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icon-close2 js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-navbar py-1" role="banner">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+
+        <!-- Logo -->
+        <div class="col-6 col-xl-2" data-aos="fade-down">
+          <h1 class="mb-0">
+            <a href="{% url 'index' %}" class="text-black h2 mb-0"><b>Buspass-360</b></a>
+          </h1>
+        </div>
+
+        <!-- Main Menu -->
+        <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
+          <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
+            <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
+
+              <li><a href="{% url 'index' %}" class="text-black h1 mb-0">Home</a></li>
+
+              {% if request.session.is_logged_in %}
+                <li class="has-children">
+                  <a href="#" class="text-black h1 mb-0">Student</a>
+                  <ul class="dropdown">
+                    <li><a href="{% url 'studentnew' %}" class="text-black h1 mb-0">1-12 Standard</a></li>
+                    <li><a href="{% url 'clgstudentnew' %}" class="text-black h1 mb-0">College Student</a></li>
+                  </ul>
+                </li>
+
+                <li class="has-children">
+                  <a href="#" class="text-black h1 mb-0">Passenger</a>
+                  <ul class="dropdown">
+                    <li><a href="{% url 'passengernew' %}" class="text-black h1 mb-0">Passenger Pass</a></li>
+                  </ul>
+                </li>
+
+                <li><a href="{% url 'changepass' %}" class="text-black h1 mb-0">Change Password</a></li>
+              {% endif %}
+
+              <li><a href="{% url 'about' %}" class="text-black h1 mb-0">About Us</a></li>
+              <li><a href="{% url 'contact' %}" class="text-black h1 mb-0">Contact</a></li>
+
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Right User Menu -->
+        <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
+          <div class="d-none d-xl-flex justify-content-end align-items-center" style="gap: 20px;">
+            {% if request.session.name and request.session.is_logged_in %}
+              <div class="dropdown">
+                <a href="#" class="text-black h5 mb-0 dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  👤 {{ request.session.name }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+              </div>
+            {% else %}
+              <a href="{% url 'signup' %}" class="text-black h5 mb-0">Sign Up</a>
+              <a href="{% url 'login' %}" class="text-black h5 mb-0">Login</a>
+            {% endif %}
+          </div>
+
+          <!-- Mobile Menu Icon -->
+          <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;">
+            <a href="#" class="site-menu-toggle js-menu-toggle text-black">
+              <span class="icon-menu h3"></span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+</div>
+
+<!-- JS Scripts -->
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+<script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'js/aos.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

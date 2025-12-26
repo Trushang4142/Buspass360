@@ -1,0 +1,21 @@
+<html>
+    <body>
+        <h2>All Submitted Passes</h2>
+<table border="1">
+  <tr>
+    <th>Name</th><th>Email</th><th>From</th><th>To</th><th>Amount</th><th>PDF</th>
+  </tr>
+  {% for pass in passes %}
+  <tr>
+    <td>{{ pass.first_name }}</td>
+    <td>{{ pass.email }}</td>
+    <td>{{ pass.from_location }}</td>
+    <td>{{ pass.to_location }}</td>
+    <td>₹{{ pass.amount }}</td>
+    <td><a href="{% url 'generate_pdf' pass.id %}">Download PDF</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+    </body>
+</html>

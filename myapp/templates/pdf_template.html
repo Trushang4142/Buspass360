@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .details { margin: 0 auto; width: 80%; }
+        .details table { width: 100%; border-collapse: collapse; }
+        .details td, .details th { border: 1px solid #000; padding: 8px; }
+
+        .photo {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .photo img {
+            width: 120px;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>GSRTC Bus Pass Receipt</h2>
+    </div>
+
+    <div class="photo">
+        <img src="{{ passenger.photo.path }}" alt="Passport Size Photo">
+    </div>
+
+    <div class="details">
+        <table>
+            <tr><th>Full Name</th><td>{{ passenger.first_name }}</td></tr>
+            <tr><th>Email</th><td>{{ passenger.email }}</td></tr>
+            <tr><th>Mobile</th><td>{{ passenger.mobile }}</td></tr>
+            <tr><th>From</th><td>{{ passenger.from_location }}</td></tr>
+            <tr><th>To</th><td>{{ passenger.to_location }}</td></tr>
+            <tr><th>Distance (km)</th><td>{{ passenger.distance_km }}</td></tr>
+            <tr><th>Pass Type</th><td>{{ passenger.pass_type }}</td></tr>
+            <tr><th>Amount</th><td>₹{{ passenger.amount }}</td></tr>
+            <tr><th>Valid From</th><td>{{ passenger.from_date }}</td></tr>
+            <tr><th>Valid To</th><td>{{ passenger.to_date }}</td></tr>
+        </table>
+    </div>
+</body>
+</html>

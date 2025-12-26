@@ -1,0 +1,33 @@
+{% extends 'header.html' %}
+{% load static %}
+
+{% block content %}
+<div class="checkout-section mt-200 mb-200">
+    <div class="site-section bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5">
+                    <img src="{% static 'images/bg3.jpg' %}" alt="Image" class="img-md-fluid" style="height:1000px ; width:1200px">
+                </div>
+                <div class="col-lg-5 bg-pink p-md-3 align-self-center">
+                    <div class="container">
+                        <div class="feature-bg">
+                            <h1>Appointment Booked Successfully!</h1>
+                            <p>Thank you, {{ appointment.name }}!</p>
+                            <p>Your appointment for {{ appointment.category }} has been booked.</p>
+                            
+                            <p>Date: {{ appointment.appointment_date }}</p>
+                            <p>Time: {{ appointment.appointment_time }}</p>
+                            
+                            <!-- Button to go back to the index page -->
+                            <form action="{% url 'index' %}" method="get">
+                                <button type="submit" class="btn btn-primary">Back to Home</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

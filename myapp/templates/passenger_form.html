@@ -1,0 +1,15 @@
+{% extends 'header.html' %}
+{% block content %}
+<div style="text-align:center; padding: 100px;">
+  <h1 style="color:green;">✅ Bus Pass Form Submitted Successfully!</h1>
+  <p>Thank you. Your details have been saved.</p>
+  <a href="{% url 'passenger_form' %}">Submit Another</a>
+  <a href="{% url 'index' %}">Return to Home</a>
+  <p>Your Unique Pass ID is: <strong>{{ unique_id }}</strong></p>
+
+  {% if show_pdf %}
+    <p><a href="{% url 'generate_pdf' uid=unique_id %}" class="btn btn-success">📄 Download Your Pass PDF</a></p>
+{% endif %}
+
+</div>
+{% endblock %}

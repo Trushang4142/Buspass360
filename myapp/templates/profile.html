@@ -1,0 +1,63 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Profile Update Section -->
+<div class="checkout-section mt-200 mb-200">
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5">
+                    <img src="{% static 'images/home-4.png' %}" alt="Image" class="img-md-fluid" style="height:750px ; width:750px">
+                </div>
+                <div class="col-lg-6 bg-white p-md-5 align-self-center">
+                    <div class="container">
+                        <div class="feature-bg">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="billing-address-form">
+                                        <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            
+                                            {% if msg %}
+                                            <div class="alert alert-danger" role="alert">
+                                                {{msg}}
+                                            </div>
+                                            {% endif %}
+                                            
+                                            <!-- Form Fields -->
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Enter Full Name" name="name" value="{{ user.name }}" style="height:40px; width:450px">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="email" class="form-control" placeholder="Enter Email" name="email" value="{{ user.email }}" readonly style="height:40px; width:450px">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="tel" class="form-control" placeholder="Enter Mobile Number" name="mobile" value="{{ user.mobile }}" style="height:40px; width:450px">
+                                            </div>
+
+                                          
+
+                                            <!-- File Upload for Profile Image -->
+                                            <div class="form-group">
+                                                <input type="file" class="form-control" name="pimage" style="height:60px; width:450px">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="submit" value="Update Profile" class="btn btn-primary py-3 px-5">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

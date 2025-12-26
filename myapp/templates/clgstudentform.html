@@ -1,0 +1,229 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Passenger Pass</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('https://www.opindia.com/wp-content/uploads/2025/01/GSRTC-2025-01-23-16-25-25.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: auto;
+      padding: auto;
+    }
+
+    .form-container {
+      background: #fff;
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+      text-align: center;
+      color: black;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Clg-Student Bus Pass Form</h2>
+    <!-- <form id="passForm" method="POST" enctype="multipart/form-data" action="{% url 'passenger_form' %}" onsubmit="return handlePayment(event)"> -->
+    <form id="passForm" method="POST" enctype="multipart/form-data" action="{% url 'clgstudentform' %}" onsubmit="return handlePayment(event)">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Bus Route</label>
+        <select name="route_type" required id="route_type" onchange="showFormFields()">
+          <option value="">-- Select Route --</option>
+          <option value="Single">Single</option>
+          <option value="Multiple">Multiple</option>
+        </select>
+      </div>
+
+      <div id="formFields" class="hidden">
+        <div class="form-group"><label>Enrollment-Number</label><input type="text" name="ent_number" required oninput="validateInput(this)"></div>
+        <div class="form-group"><label>Full Name</label><input type="text" name="first_name" required></div>
+        <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+        <div class="form-group"><label>Mobile</label><input type="text" name="mobile" maxlength="10" oninput="validateInput(this)" required></div>
+        <div class="form-group"><label>Address</label><input type="text" name="address" required></div>
+        <div class="form-group"><label for="dob">Date of Birth</label><input type="date" id="dob" name="dob" max="2017-12-31" required></div>
+        <div class="form-group"><label>College Name</label><input type="text" name="clg_name" required></div>
+        <div class="form-group"><label>College_Address</label><input type="text" name="clg_address" required></div>
+        <div class="form-group"><label>College_Sem</label><input type="text" name="sem" oninput="validateInput1(this)" required></div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select name="gender" required>
+            <option value="">-- Select --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>From Location</label><input type="text" name="from_location" required></div>
+        <div class="form-group"><label>To Location</label><input type="text" name="to_location" required></div>
+        <div class="form-group"><label>Distance (KM)</label><input type="number" name="distance_km" id="distance" required></div>
+        <div class="form-group">
+          <label>Pass Type</label>
+          <select name="pass_type" id="passType" onchange="calculateAmount()" required>
+            <option value="">-- Select --</option>
+            <option value="Local">Local</option>
+            <option value="Express">Express</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <select name="duration_months" id="duration" onchange="calculateAmount()" required>
+            <option value="">-- Select --</option>
+            <option value="1">1 Month</option>
+            <option value="3">3 Months</option>
+            <option value="6">6 Months</option>
+          </select>
+        </div>
+        <div class="form-group"><label>From Date</label><input type="date" name="from_date" id="fromDate" readonly required></div>
+        <div class="form-group"><label>To Date(Pass Active Date)</label><input type="date" name="to_date" required></div>
+        <div class="form-group"><label>Amount</label><input type="text" name="amount" id="amount" readonly required></div>
+        <div class="form-group"><label>Passport Size Photo</label><input type="file" name="photo" required></div>
+        <div class="form-group"><label>Light Bill</label><input type="file" name="light_bill" required></div>
+        <div class="form-group"><label>Aadhaar</label><input type="file" name="aadhaar" required></div>
+        <div class="form-group"><label>College_provisional Certificate</label><input type="file" name="provisional" required></div>
+        <div class="form-group"><label>College_Fee Receipt</label><input type="file" name="fee_receipt" required></div>
+       <div class="form-group">
+          <label>Payment Mode</label>
+          <select name="payment_mode" id="payment" required>
+            <option value="">-- Select --</option>
+            <option value="Cash">Cash</option>
+            <option value="Online">Online</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function showFormFields() {
+      document.getElementById('formFields').classList.remove('hidden');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("fromDate").value = today;
+      document.getElementById("fromDate").setAttribute("min", today);
+    });
+
+    function calculateAmount() {
+      const duration = document.getElementById("duration").value;
+      const passType = document.getElementById("passType").value;
+      const distance = parseFloat(document.getElementById("distance").value);
+      let amount = 0;
+
+      const dayMap = { "1": 7, "3": 14, "6": 21 };
+
+      if (passType && duration && !isNaN(distance) && distance > 0) {
+        const days = dayMap[duration];
+        const roundTrip = distance * 2;
+
+        if (passType === "Local") {
+          amount = roundTrip * 0.89 * days;
+        } else if (passType === "Express") {
+          amount = roundTrip * 1.2 * days;
+        }
+      }
+
+      document.getElementById("amount").value = amount.toFixed(2);
+    }
+
+    function validateInput(input) {
+      input.value = input.value.replace(/\D/g, '');
+      if (input.value.length > 10) {
+        input.value = input.value.slice(0, 10);
+      }
+    }
+
+    function validateInput1(input) {
+      input.value = input.value.replace(/\D/g, '');
+      if (input.value.length > 1) {
+        input.value = input.value.slice(0, 1);
+      }
+    }
+
+    function handlePayment(event) {
+  event.preventDefault();
+
+  const paymentMode = document.getElementById("payment").value;
+  const form = document.getElementById("passForm");
+
+  if (paymentMode === "Online") {
+    // Replace this with actual Django URL path
+    window.location.href = "/payment/start/";
+    return false;
+  } else if (paymentMode === "Cash") {
+    alert("Cash payment selected. Submitting form...");
+    form.submit();  // normal POST to save in DB
+    return true;
+  } else {
+    alert("Please select a payment method.");
+    return false;
+  }
+}
+
+document.getElementById("dob").addEventListener("change", function () {
+    const inputDate = new Date(this.value);
+    const maxDate = new Date("2017-12-31");
+
+    if (inputDate > maxDate) {
+        alert("Year must not be later than 2017.");
+        this.value = "";
+    }
+});
+
+  </script>
+</body>
+</html>
+{% endblock %}
